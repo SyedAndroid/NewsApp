@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreferenceCompat
+        android:id="@+id/business"
+        android:defaultValue="false"
+        android:key="@string/pref_category_value_business"
+        android:title="@string/pref_category_label_business" />
+
+    <SwitchPreferenceCompat
+        android:id="@+id/entertainment"
+        android:defaultValue="false"
+        android:key="@string/pref_category_value_entertainment"
+        android:title="@string/pref_category_label_entertainment" />
+
+    <SwitchPreferenceCompat
+        android:id="@+id/gaming"
+        android:defaultValue="false"
+        android:key="@string/pref_category_value_gaming"
+        android:title="@string/pref_category_label_gaming" />
+
+    <SwitchPreferenceCompat
+        android:id="@+id/politics"
+        android:defaultValue="false"
+        android:key="@string/pref_category_value_politics"
+        android:title="@string/pref_category_label_politics" />
+
+    <SwitchPreferenceCompat
+        android:id="@+id/sports"
+        android:defaultValue="false"
+        android:key="@string/pref_category_value_sports"
+        android:title="@string/pref_category_label_sports" />
+
+    <SwitchPreferenceCompat
+        android:id="@+id/music"
+        android:defaultValue="false"
+        android:key="@string/pref_category_value_music"
+        android:title="@string/pref_category_label_music" />
+
+    <SwitchPreferenceCompat
+        android:id="@+id/science"
+        android:defaultValue="false"
+        android:key="@string/pref_category_value_science"
+        android:title="@string/pref_category_label_science" />
+
+    <SwitchPreferenceCompat
+        android:id="@+id/general"
+        android:defaultValue="false"
+        android:key="@string/pref_category_value_general"
+        android:title="@string/pref_category_label_general" />
+
+    <SwitchPreferenceCompat
+        android:id="@+id/technology"
+        android:defaultValue="false"
+        android:key="@string/pref_category_value_technology"
+        android:title="@string/pref_category_label_technology" />
+
+</PreferenceScreen>

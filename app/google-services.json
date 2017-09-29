@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "358251026057",
+    "project_id": "newsapplication-cbac9"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:358251026057:android:da84dcd57ed09a6d",
+        "android_client_info": {
+          "package_name": "com.udacity.syed.newsapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "358251026057-ukj1uhspndq7j9naq768qccf1ehp3v4b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.udacity.syed.newsapplication",
+            "certificate_hash": "531fb7d39ec0fe0b2368afa2782d7f26d06ef912"
+          }
+        },
+        {
+          "client_id": "358251026057-ionqblkpkka04cabjpejv21kbtoseel7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAILVodfkqsG9z-TUGh-acIUBmGbeoph8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

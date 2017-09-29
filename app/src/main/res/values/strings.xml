@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">News Application</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="api_key">c99137e2134e412c8e65bad81280ada3</string>
+
+    <string name="business">Business</string>
+    <string name="entertainment">Entertainment</string>
+    <string name="gaming">Gaming</string>
+    <string name="politics">Politics</string>
+    <string name="sports">Sports</string>
+    <string name="music">Music</string>
+    <string name="science">Nature and Science</string>
+    <string name="general">General</string>
+    <string name="technology">Technology</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_detail_article">DetailArticleActivity</string>
+
+    <string name="pref_category_label_business">Business</string>
+    <string name="pref_category_label_entertainment">Entertainment</string>
+    <string name="pref_category_label_gaming">Gaming</string>
+    <string name="pref_category_label_politics">Politics</string>
+    <string name="pref_category_label_sports">Sports</string>
+    <string name="pref_category_label_music">Music</string>
+    <string name="pref_category_label_science"> Nature and Science</string>
+    <string name="pref_category_label_general">General</string>
+    <string name="pref_category_label_technology">Technology</string>
+
+    <!-- Key name for category  preference in SharedPreferences -->
+    <string name="pref_category_key">category</string>
+    <string name="pref_category_label">Select Categories:</string>
+
+    <string name="pref_category_value_business">business</string>
+    <string name="pref_category_value_entertainment">entertainment</string>
+    <string name="pref_category_value_gaming">gaming</string>
+    <string name="pref_category_value_politics">politics</string>
+    <string name="pref_category_value_sports">sports</string>
+    <string name="pref_category_value_music">music</string>
+    <string name="pref_category_value_science"> science</string>
+    <string name="pref_category_value_general">general</string>
+    <string name="pref_category_value_technology">technology</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
