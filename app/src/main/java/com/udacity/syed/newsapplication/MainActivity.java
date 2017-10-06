@@ -176,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onResume(){
          super.onResume();
+        recyclerView.setVisibility(View.GONE);
     }
 
 
@@ -628,6 +629,7 @@ public class MainActivity extends AppCompatActivity implements
                 storedSources.remove(item);
             }
         });
+
         recyclerView.setAdapter(rv);
         gridLayout.setVisibility(View.GONE);
 

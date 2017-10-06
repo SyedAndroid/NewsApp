@@ -43,5 +43,8 @@ public class SettingsActivity extends AppCompatActivity implements
             String where = NewsContract.SourceColumns.COLUMN_CATEGORY_NAME + "= '" + key + "'";
             int j = getContentResolver().delete(NewsProvider.Sources.CONTENT_URI, where, null);
         }
+        if(sharedPreferences.getBoolean(key,false)){
+
+        }
     }
 }
