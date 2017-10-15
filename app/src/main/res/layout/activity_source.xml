@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="4dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/source_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="SaveSources"
+            android:text="@string/save" />
+
+        <ImageView
+            android:id="@+id/category_pic"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:contentDescription="@string/category_pic" />
+
+        <android.support.v7.widget.RecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/recycle_view_source"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+    </LinearLayout>
+</FrameLayout><!--<CheckBox
+        android:id="@+id/businessTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:layout_margin="8dp"
+        android:text="@string/business"/>
+
+        <CheckBox
+        android:id="@+id/enterTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:layout_margin="8dp"
+
+            android:text="@string/entertainment"/>
+
+    <CheckBox
+        android:id="@+id/politicsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:layout_margin="8dp"
+        android:text="@string/politics"/>
+
+    <CheckBox
+        android:id="@+id/sportsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:layout_margin="8dp"
+        android:text="@string/sports"/>
+
+    <CheckBox
+        android:id="@+id/scienceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textSize="24sp"
+        android:text="@string/science"/>
+
+    <CheckBox
+        android:id="@+id/techTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textSize="24sp"
+        android:text="@string/technology"/>
+
+    <CheckBox
+        android:id="@+id/generalTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textSize="24sp"
+        android:text="@string/general"/>
+
+    <CheckBox
+        android:id="@+id/musicTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textSize="24sp"
+        android:text="@string/music"/>
+
+    <CheckBox
+        android:id="@+id/gameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:layout_margin="8dp"
+           android:text="@string/gaming"/>
+
+    <Button android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Next"
+        android:onClick="findSources"/>-->
+
+
+
+
+
+

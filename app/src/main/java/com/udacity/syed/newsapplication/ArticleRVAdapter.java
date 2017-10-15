@@ -1,6 +1,9 @@
 package com.udacity.syed.newsapplication;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +13,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -28,13 +30,12 @@ import butterknife.ButterKnife;
 
 public class ArticleRVAdapter extends RecyclerView.Adapter<ArticleRVAdapter.ArticleViewHolder> {
     List<Article> articles;
-    List<ImageView> images = new ArrayList<>();
+    Activity activity;
 
-     private ArticleClickListener mArticleclickListener;
 
-    public ArticleRVAdapter(List<Article> articles, ArticleClickListener articleClickListener) {
+    public ArticleRVAdapter(List<Article> articles, Activity activity) {
+        this.activity = activity;
         this.articles = articles;
-             this.mArticleclickListener = articleClickListener;
     }
 
     @Override
@@ -48,20 +49,36 @@ public class ArticleRVAdapter extends RecyclerView.Adapter<ArticleRVAdapter.Arti
 
     @Override
     public void onBindViewHolder(final ArticleViewHolder holder, final int position) {
-        Context context = holder.itemView.getContext();
-        Article simpleArticle = articles.get(position);
+        final Context context = holder.itemView.getContext();
+        final Article simpleArticle = articles.get(position);
+        holder.headline.setText(simpleArticle.getTitle());
 
+
+        holder.leadin.setText(simpleArticle.getAuthor());
         if (simpleArticle.getImgURL() == null) {
             holder.thumbnail.setVisibility(View.GONE);
         } else {
 
             Picasso.with(context).load(simpleArticle.getImgURL()).fit().into(holder.thumbnail);
+            holder.thumbnail.setContentDescription(simpleArticle.getTitle());
         }
-        holder.headline.setText(simpleArticle.getTitle());
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, DetailArticleActivity.class);
+                intent.putExtra("title", simpleArticle.getTitle());
+                intent.putExtra("detail", simpleArticle.getDescription());
+                intent.putExtra("pic", simpleArticle.getImgURL());
+                intent.putExtra("url", simpleArticle.getArticleURL());
+                intent.putExtra("date", simpleArticle.getPublishedTime());
+                intent.putExtra("author", simpleArticle.getAuthor());
 
-        holder.leadin.setText(simpleArticle.getAuthor());
-        images.add(position, holder.thumbnail);
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(activity, (View) holder.thumbnail, "picture");
+                context.startActivity(intent, options.toBundle());
+            }
+        });
 
     }
 
@@ -71,12 +88,8 @@ public class ArticleRVAdapter extends RecyclerView.Adapter<ArticleRVAdapter.Arti
         return articles.size();
     }
 
-      public interface ArticleClickListener {
-          void articleClickListener(int position, Article article);
-        }
 
-    public class ArticleViewHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
+    public class ArticleViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.image)
         ImageView thumbnail;
@@ -86,21 +99,12 @@ public class ArticleRVAdapter extends RecyclerView.Adapter<ArticleRVAdapter.Arti
         TextView leadin;
 
 
-
         public ArticleViewHolder(View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
             ButterKnife.bind(this, itemView);
 
         }
 
-        @Override
-        public void onClick(View view) {
-            int adapterPosition = getAdapterPosition();
-            Article simpleArticle = articles.get(adapterPosition);
-
-             mArticleclickListener.articleClickListener(adapterPosition,simpleArticle);
-        }
 
     }
 }

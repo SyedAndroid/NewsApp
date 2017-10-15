@@ -11,6 +11,7 @@ public class Source {
     private String desc;
     private String url;
     private String category;
+    private int status;
 
     public Source(String name, String id, String desc, String url, String category) {
         this.name = name;
@@ -18,6 +19,16 @@ public class Source {
         this.desc = desc;
         this.url = url;
         this.category = category;
+    }
+
+    public Source(String name, String id, int status) {
+        this.name = name;
+        this.id = id;
+        this.status = status;
+    }
+
+    public int getStatus() {
+        return status;
     }
 
     public String getName() {

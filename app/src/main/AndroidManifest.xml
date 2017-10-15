@@ -29,14 +29,13 @@
             android:value="@integer/google_play_services_version" />
 
         <provider
-            android:name=".data.generated.NewsProvider"
-            android:authorities="com.udacity.syed.newsapplication.data.NewsProvider"
+            android:name=".data.NewsProvider"
+            android:authorities="com.udacity.syed.newsapplication"
             android:exported="false" />
 
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".DetailArticleActivity"
@@ -44,6 +43,31 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SavedArticlesActivity" />
+        <activity
+            android:name=".SourceActivity"
+            android:parentActivityName=".CategoryActivity" />
+        <activity
+            android:name=".CategoryActivity"
+            android:parentActivityName=".MainActivity" />
+
+        <receiver android:name=".NewAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.udacity.syed.newsapplication.DATA_FETCHED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/new_app_widget_info" />
+        </receiver>
+
+        <service android:name=".RemoteFetchService" />
+        <service
+            android:name=".WidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+        <service
+            android:name=".NetworkIntentService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

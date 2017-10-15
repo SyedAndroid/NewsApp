@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><!-- COMPLETED (3) Add a res->values->arrays.xml file which contains two arrays, one for
+    labels and one for values. The arrays should contain strings found in this file-->
+<resources>
+    <!-- Label ordering must match values -->
+    <array name="pref_color_option_labels">
+        <item>hello</item>
+        <item>hej</item>
+        <item>Nai</item>
+    </array>
+
+    <array name="pref_color_option_values">
+        <item>hell</item>
+        <item>heyel</item>
+        <item>no</item>
+    </array>
+</resources>

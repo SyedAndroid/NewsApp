@@ -1,57 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <SwitchPreferenceCompat
-        android:id="@+id/business"
-        android:defaultValue="false"
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <MultiSelectListPreference
         android:key="@string/pref_category_value_business"
-        android:title="@string/pref_category_label_business" />
-
-    <SwitchPreferenceCompat
-        android:id="@+id/entertainment"
-        android:defaultValue="false"
+        android:title="@string/pref_category_label_business"
+        app:icon="@drawable/business" />
+    <MultiSelectListPreference
         android:key="@string/pref_category_value_entertainment"
-        android:title="@string/pref_category_label_entertainment" />
+        android:title="@string/pref_category_label_entertainment"
+        app:icon="@drawable/entertainment" />
 
-    <SwitchPreferenceCompat
-        android:id="@+id/gaming"
-        android:defaultValue="false"
+    <MultiSelectListPreference
         android:key="@string/pref_category_value_gaming"
-        android:title="@string/pref_category_label_gaming" />
-
-    <SwitchPreferenceCompat
-        android:id="@+id/politics"
-        android:defaultValue="false"
+        android:title="@string/pref_category_label_gaming"
+        app:icon="@drawable/gaming" />
+    <MultiSelectListPreference
         android:key="@string/pref_category_value_politics"
-        android:title="@string/pref_category_label_politics" />
+        android:title="@string/pref_category_label_politics"
+        app:icon="@drawable/politics"
 
-    <SwitchPreferenceCompat
-        android:id="@+id/sports"
-        android:defaultValue="false"
+        />
+    <MultiSelectListPreference
         android:key="@string/pref_category_value_sports"
-        android:title="@string/pref_category_label_sports" />
+        android:title="@string/pref_category_label_sports"
+        app:icon="@drawable/sport"
 
-    <SwitchPreferenceCompat
-        android:id="@+id/music"
-        android:defaultValue="false"
+        />
+    <MultiSelectListPreference
         android:key="@string/pref_category_value_music"
-        android:title="@string/pref_category_label_music" />
-
-    <SwitchPreferenceCompat
-        android:id="@+id/science"
-        android:defaultValue="false"
+        android:title="@string/pref_category_label_music"
+        app:icon="@drawable/music" />
+    <MultiSelectListPreference
         android:key="@string/pref_category_value_science"
-        android:title="@string/pref_category_label_science" />
-
-    <SwitchPreferenceCompat
-        android:id="@+id/general"
-        android:defaultValue="false"
+        android:title="@string/pref_category_label_science"
+        app:icon="@drawable/science_and_nature" />
+    <MultiSelectListPreference
         android:key="@string/pref_category_value_general"
-        android:title="@string/pref_category_label_general" />
-
-    <SwitchPreferenceCompat
-        android:id="@+id/technology"
-        android:defaultValue="false"
+        android:title="@string/pref_category_label_general"
+        app:icon="@drawable/general" />
+    <MultiSelectListPreference
         android:key="@string/pref_category_value_technology"
-        android:title="@string/pref_category_label_technology" />
+        android:title="@string/pref_category_label_technology"
+        app:icon="@drawable/technology" />
+
 
 </PreferenceScreen>

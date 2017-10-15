@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/category_selector"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.udacity.syed.newsapplication.CategoryActivity">
+
+    <LinearLayout
+        android:id="@+id/grid_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/businessview"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_margin="8dp"
+            app:cardElevation="6dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/business"
+                android:gravity="center"
+                android:paddingTop="8dp"
+                android:src="@drawable/business"
+                android:textSize="24sp"
+
+                android:textStyle="bold" />
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/enterview"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_margin="8dp"
+            app:cardElevation="6dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:contentDescription="@string/entertainment"
+                android:gravity="center"
+                android:src="@drawable/entertainment"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/politicsview"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_margin="8dp"
+            app:cardElevation="6dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:contentDescription="@string/politics"
+                android:gravity="center"
+                android:src="@drawable/politics"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/sportsview"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_margin="8dp"
+            app:cardElevation="6dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:contentDescription="@string/sports"
+                android:gravity="center"
+                android:src="@drawable/sport"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/scienceview"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_margin="8dp"
+            app:cardElevation="6dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:contentDescription="@string/science"
+                android:gravity="center"
+                android:src="@drawable/science_and_nature"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/techview"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_margin="8dp"
+            app:cardElevation="6dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:contentDescription="@string/technology"
+                android:gravity="center"
+                android:src="@drawable/technology"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/generalview"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_margin="8dp"
+            app:cardElevation="6dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:contentDescription="@string/general"
+                android:gravity="center"
+                android:src="@drawable/general"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/musicview"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_margin="8dp"
+            app:cardElevation="6dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:contentDescription="@string/music"
+                android:gravity="center"
+                android:src="@drawable/music"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/gameview"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_margin="8dp"
+            app:cardElevation="6dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:contentDescription="@string/gaming"
+                android:gravity="center"
+                android:src="@drawable/gaming"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+</ScrollView>

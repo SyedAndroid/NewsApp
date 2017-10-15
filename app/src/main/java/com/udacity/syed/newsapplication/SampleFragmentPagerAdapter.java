@@ -3,7 +3,6 @@ package com.udacity.syed.newsapplication;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
@@ -40,7 +39,6 @@ public class SampleFragmentPagerAdapter extends FragmentStatePagerAdapter {
         pageFragment.setCategory(tabTitles.get(position));
         return pageFragment.newInstance(position + 1, tabTitles.get(position));
     }
-
 
 
     @Override

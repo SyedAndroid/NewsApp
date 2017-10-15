@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.support.v4.content.AsyncTaskLoader;
 
 import com.udacity.syed.newsapplication.data.NewsContract;
-import com.udacity.syed.newsapplication.data.NewsProvider;
 import com.udacity.syed.newsapplication.utils.JSONUtils;
 import com.udacity.syed.newsapplication.utils.NetworkUtil;
 
@@ -43,8 +42,9 @@ public class ArticleLoader extends AsyncTaskLoader<List<Article>> {
     @Override
     public List<Article> loadInBackground() {
         ArrayList<Article> articlesList = new ArrayList<>();
-        String selection = String.format(NewsContract.SourceColumns.COLUMN_CATEGORY_NAME + "='" + category + "'");
-        Cursor cursor = getContext().getContentResolver().query(NewsProvider.Sources.CONTENT_URI, null, selection, null, null);
+        String selection = String.format(NewsContract.SourceColumns.COLUMN_CATEGORY_NAME + "='" + category + "'  AND ");
+        String selection2 = NewsContract.SourceColumns.COLUMN_COLUMN_STATUS + "= '" + NewsContract.SourceColumns.SOURCE_SELECTED + "'";
+        Cursor cursor = getContext().getContentResolver().query(NewsContract.SourceColumns.CONTENT_URI, null, selection + selection2, null, null);
 
         int index = cursor.getColumnIndex(NewsContract.SourceColumns.COLUMN_SOURCE_ID);
         cursor.moveToFirst();

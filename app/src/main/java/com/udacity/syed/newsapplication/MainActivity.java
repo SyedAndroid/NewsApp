@@ -6,15 +6,11 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.Loader;
-import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -22,9 +18,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.preference.PreferenceManager;
-import android.support.v7.preference.SwitchPreferenceCompat;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -32,25 +25,28 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.plus.Plus;
+import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.udacity.syed.newsapplication.data.NewsContract;
-import com.udacity.syed.newsapplication.data.NewsProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener,
         LoaderManager.LoaderCallbacks<List<Source>> {
@@ -65,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements
     Toolbar toolbar;
     LinearLayout signInLayout;
     ViewPager viewPager;
-    FloatingActionButton fab;
     DrawerLayout drawer;
     NavigationView navigationView;
     TabLayout tabLayout;
@@ -75,6 +70,13 @@ public class MainActivity extends AppCompatActivity implements
     List<Source> selectedSources;
     List<Source> storedSources;
     Button articleButton;
+    ScrollView categorySelectorView;
+    FrameLayout sourceFragmentLayout;
+    TextView name;
+    TextView email;
+    String emailId;
+    String nameNav;
+    boolean notOnResume;
     private Button mSignInButton;
     private Button mSignOutButton;
     private Button mRevokeButton;
@@ -83,14 +85,12 @@ public class MainActivity extends AppCompatActivity implements
     private int mSignInProgress;
     private PendingIntent mSignInIntent;
     private int mSignInError;
-    boolean notOnResume;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        notOnResume=true;
+        notOnResume = true;
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         mSignInButton = (Button) findViewById(R.id.sign_in_button);
         mSignOutButton = (Button) findViewById(R.id.sign_out_button);
@@ -98,66 +98,48 @@ public class MainActivity extends AppCompatActivity implements
         mStatus = (TextView) findViewById(R.id.sign_in_status);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         signInLayout = (LinearLayout) findViewById(R.id.sign_layout);
-        gridLayout = (GridLayout) findViewById(R.id.grid_category);
         setSupportActionBar(toolbar);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-        recyclerView = (RecyclerView) findViewById(R.id.recycle_view_source);
-        recyclerView.setVisibility(View.GONE);
-        articleButton = (Button) findViewById(R.id.findarticles_button);
-        articleButton.setVisibility(View.GONE);
 
-        mSignOutButton.setVisibility(View.GONE);
-        mRevokeButton.setVisibility(View.GONE);
 
-        gridLayout.setVisibility(View.GONE);
-        mGoogleApiClient = buildApiClient();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestId()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
 
-        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-             updateUI();
-        } else {
-            invalidateOptionsMenu();
+
+        invalidateOptionsMenu();
         //  toolbar.setVisibility(View.GONE);
-        fab.setVisibility(View.GONE);
-            mSignInButton.setVisibility(View.VISIBLE);
+        mSignInButton.setVisibility(View.VISIBLE);
 
-            //drawer.setVisibility(View.GONE);
-        gridLayout.setVisibility(View.GONE);
+        //drawer.setVisibility(View.GONE);
         navigationView.setVisibility(View.GONE);
         tabLayout.setVisibility(View.GONE);
         viewPager.setVisibility(View.GONE);
         mSignInButton.setOnClickListener(this);
-        }
-        }
-        public  void setupPreferences(){
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+    }
 
-        }
 
-    private GoogleApiClient buildApiClient() {
+
+/*    private GoogleApiClient buildApiClient() {
         return new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(Plus.API, Plus.PlusOptions.builder().build())
-                .addScope(new Scope("email"))
+                .enableAutoManage(this *//* FragmentActivity *//*, this *//* OnConnectionFailedListener *//*)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-    }
+    }*/
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        if (mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
-        }
+
     }
 
     @Override
@@ -166,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements
 
 
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -174,24 +157,22 @@ public class MainActivity extends AppCompatActivity implements
 
 
     @Override
-    protected void onResume(){
-         super.onResume();
-        recyclerView.setVisibility(View.GONE);
+    protected void onResume() {
+        super.onResume();
+
     }
 
 
-   public void updateUI() {
+    public void updateUI() {
 
         menuStatus = true;
         invalidateOptionsMenu();
-        gridLayout.setVisibility(View.GONE);
         signInLayout.setVisibility(View.GONE);
         mStatus.setVisibility(View.GONE);
         mSignInButton.setVisibility(View.GONE);
         mSignOutButton.setVisibility(View.GONE);
         mRevokeButton.setVisibility(View.GONE);
         toolbar.setVisibility(View.VISIBLE);
-        fab.setVisibility(View.GONE);
         drawer.setVisibility(View.VISIBLE);
         navigationView.setVisibility(View.VISIBLE);
         tabLayout.setVisibility(View.VISIBLE);
@@ -199,13 +180,6 @@ public class MainActivity extends AppCompatActivity implements
 
         setSupportActionBar(toolbar);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -256,16 +230,22 @@ public class MainActivity extends AppCompatActivity implements
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
 
             return true;
         } else if (id == R.id.signOut) {
-            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-            mGoogleApiClient.disconnect();
+            notOnResume = true;
+            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(Status status) {
+                            // [START_EXCLUDE]
+                            updateSignoutUI();
 
-            mGoogleApiClient.connect();
-            notOnResume=true;
-            updateSignoutUI();
-            return true;
+                            // [END_EXCLUDE]
+                        }
+                    });
         }
 
 
@@ -275,42 +255,56 @@ public class MainActivity extends AppCompatActivity implements
     private void updateSignoutUI() {
         menuStatus = false;
         invalidateOptionsMenu();
+
         signInLayout.setVisibility(View.VISIBLE);
         mStatus.setVisibility(View.VISIBLE);
         mSignInButton.setVisibility(View.VISIBLE);
         mSignOutButton.setVisibility(View.VISIBLE);
         mRevokeButton.setVisibility(View.VISIBLE);
-        gridLayout.setVisibility(View.GONE);
         viewPager.setVisibility(View.GONE);
 
-        fab.setVisibility(View.GONE);
         navigationView.setVisibility(View.GONE);
         tabLayout.setVisibility(View.GONE);
         mSignInButton.setEnabled(true);
         mSignOutButton.setEnabled(false);
         mRevokeButton.setEnabled(false);
 
-        mStatus.setText("Signed out");
+        mStatus.setText(getString(R.string.sign_out));
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+
         int id = item.getItemId();
+        name = findViewById(R.id.user_name);
+        email = findViewById(R.id.email);
+        name.setText(nameNav);
+        email.setText(emailId);
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-            Intent intent = new Intent(this,SettingsActivity.class);
+        if (id == R.id.profile) {
+
+        } else if (id == R.id.settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-            Intent intent = new Intent(this,SavedArticlesActivity.class);
+        } else if (id == R.id.fav_articles) {
+            Intent intent = new Intent(this, SavedArticlesActivity.class);
             startActivity(intent);
+        } else if (id == R.id.signout_now) {
+
+            notOnResume = true;
+            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(Status status) {
+                            // [START_EXCLUDE]
+                            updateSignoutUI();
+
+                            // [END_EXCLUDE]
+                        }
+                    });
+
 
         } else if (id == R.id.nav_share) {
 
@@ -328,43 +322,49 @@ public class MainActivity extends AppCompatActivity implements
             // between connected and not connected.
             switch (v.getId()) {
                 case R.id.sign_in_button:
-                    mStatus.setText("Signing In");
-                    resolveSignInError();
+                    mStatus.setText(getString(R.string.singin));
+
+                    Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                    startActivityForResult(signInIntent, RC_SIGN_IN);
                     break;
                 case R.id.sign_out_button:
                     // We clear the default account on sign out so that Google Play
                     // services will not return an onConnected callback without user
                     // interaction.
-                    Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-                    mGoogleApiClient.disconnect();
-                    mGoogleApiClient.connect();
+                    Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                            new ResultCallback<Status>() {
+                                @Override
+                                public void onResult(Status status) {
+                                    // [START_EXCLUDE]
+
+                                    // [END_EXCLUDE]
+                                }
+                            });
+
                     break;
                 case R.id.revoke_access_button:
                     // After we revoke permissions for the user with a GoogleApiClient
                     // instance, we must discard it and create a new one.
-                    Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
                     // Our sample has caches no user data from Google+, however we
                     // would normally register a callback on revokeAccessAndDisconnect
                     // to delete user data so that we comply with Google developer
                     // policies.
-                    Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient);
-                    mGoogleApiClient = buildApiClient();
-                    mGoogleApiClient.connect();
+
                     break;
             }
         }
     }
 
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        Log.i(TAG, "onConnected");
 
-        if(notOnResume) {
+    public void handleSignInResult(GoogleSignInResult result) {
+        Log.i(TAG, "onConnected");
+        signInLayout.setVisibility(View.GONE);
+        if (notOnResume) {
             // Update the user interface to reflect that the user is signed in.
             mSignInButton.setEnabled(false);
             mSignOutButton.setEnabled(false);
             mRevokeButton.setEnabled(false);
-            notOnResume=false   ;
+            notOnResume = false;
             // Indicate that the sign in process is complete.
             mSignInProgress = SIGNED_IN;
 
@@ -373,9 +373,14 @@ public class MainActivity extends AppCompatActivity implements
             try {
                 ////Person currentUser = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
                 ////mStatus.setText(String.format("Signed In to G+ as %s", currentUser.getDisplayName()));
-                String emailAddress = Plus.AccountApi.getAccountName(mGoogleApiClient);
-                String selection = NewsContract.CategoryColumns.COLUMN_STATUS + "='" + NewsContract.CategoryColumns.CATEGORY_SELECTED + "'";
-                Cursor cursor = getContentResolver().query(NewsProvider.Categories.CONTENT_URI, null, selection, null, null);
+                GoogleSignInAccount acct = result.getSignInAccount();
+                if (acct != null) {
+                    emailId = acct.getEmail();
+                    nameNav = acct.getDisplayName();
+                }
+                String selection = NewsContract.CategoryColumns.COLUMN_STATUS + "=" + NewsContract.CategoryColumns.CATEGORY_SELECTED;
+                Uri uri = NewsContract.CategoryColumns.CONTENT_URI;
+                Cursor cursor = getContentResolver().query(uri, null, selection, null, null);
                 int index = cursor.getColumnIndex(NewsContract.CategoryColumns.COLUMN_NAME);
                 category = new ArrayList<>();
                 if (cursor.getCount() > 0) {
@@ -384,23 +389,23 @@ public class MainActivity extends AppCompatActivity implements
                         category.add(cursor.getString(index));
                         cursor.moveToNext();
                     }
+                    cursor.close();
                     menuStatus = true;
                     invalidateOptionsMenu();
-                    gridLayout.setVisibility(View.GONE);
                     signInLayout.setVisibility(View.GONE);
                     mStatus.setVisibility(View.GONE);
                     mSignInButton.setVisibility(View.GONE);
                     mSignOutButton.setVisibility(View.GONE);
                     mRevokeButton.setVisibility(View.GONE);
                     toolbar.setVisibility(View.VISIBLE);
-                    fab.setVisibility(View.VISIBLE);
                     drawer.setVisibility(View.VISIBLE);
                     navigationView.setVisibility(View.VISIBLE);
                     setSupportActionBar(toolbar);
-                    recyclerView.setVisibility(View.GONE);
                     updateUI();
+
                     articleButton.setVisibility(View.GONE);
                 } else {
+
                     getFav();
                 }
             } catch (Exception ex) {
@@ -410,11 +415,30 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void onConnectionSuspended(int i) {
-        mGoogleApiClient.connect();
 
+    public void onStart() {
+        super.onStart();
+
+        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+        if (opr.isDone()) {
+            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
+            // and the GoogleSignInResult will be available instantly.
+            Log.d(TAG, "Got cached sign-in");
+            GoogleSignInResult result = opr.get();
+            handleSignInResult(result);
+        } else {
+            // If the user has not previously signed in on this device or the sign-in has expired,
+            // this asynchronous branch will attempt to sign in the user silently.  Cross-device
+            // single sign-on will occur in this branch.
+            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+                @Override
+                public void onResult(GoogleSignInResult googleSignInResult) {
+                    handleSignInResult(googleSignInResult);
+                }
+            });
+        }
     }
+
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -432,6 +456,7 @@ public class MainActivity extends AppCompatActivity implements
                 // so we should continue processing errors until the user is signed in
                 // or they click cancel.
                 resolveSignInError();
+
             }
         }
 
@@ -454,6 +479,8 @@ public class MainActivity extends AppCompatActivity implements
                 // resolve the error currently preventing our connection to
                 // Google Play services.
                 mSignInProgress = STATE_IN_PROGRESS;
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+
                 startIntentSenderForResult(mSignInIntent.getIntentSender(),
                         RC_SIGN_IN, null, 0, 0, 0);
             } catch (IntentSender.SendIntentException e) {
@@ -479,7 +506,7 @@ public class MainActivity extends AppCompatActivity implements
         mSignOutButton.setEnabled(false);
         mRevokeButton.setEnabled(false);
 
-        mStatus.setText("Signed out");
+        mStatus.setText(getString(R.string.sign_out));
 
     }
 
@@ -490,9 +517,13 @@ public class MainActivity extends AppCompatActivity implements
         switch (requestCode) {
             case RC_SIGN_IN:
                 if (resultCode == RESULT_OK) {
+
                     // If the error resolution was successful we should continue
                     // processing errors.
+
                     mSignInProgress = STATE_SIGNING_IN;
+                    GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+                    handleSignInResult(result);
 
                 } else {
                     // If the error resolution was not successful or the user canceled,
@@ -512,91 +543,30 @@ public class MainActivity extends AppCompatActivity implements
 
     public void getFav() {
 
-        menuStatus = true;
-        invalidateOptionsMenu();
-        gridLayout.setVisibility(View.VISIBLE);
-        signInLayout.setVisibility(View.GONE);
-        mStatus.setVisibility(View.GONE);
-        mSignInButton.setVisibility(View.GONE);
-        mSignOutButton.setVisibility(View.GONE);
-        mRevokeButton.setVisibility(View.GONE);
-        toolbar.setVisibility(View.VISIBLE);
-        fab.setVisibility(View.VISIBLE);
-        drawer.setVisibility(View.VISIBLE);
-        navigationView.setVisibility(View.VISIBLE);
 
-
-        setSupportActionBar(toolbar);
-
-    }
-
-    public void findSources(View v) {
-        CheckBox entertainment = (CheckBox) findViewById(R.id.enterTextView);
-        CheckBox politic = (CheckBox) findViewById(R.id.politicsTextView);
-        CheckBox business = (CheckBox) findViewById(R.id.businessTextView);
-        CheckBox sports = (CheckBox) findViewById(R.id.sportsTextView);
-        CheckBox science = (CheckBox) findViewById(R.id.scienceTextView);
-        CheckBox tech = (CheckBox) findViewById(R.id.techTextView);
-        CheckBox music = (CheckBox) findViewById(R.id.musicTextView);
-        CheckBox general = (CheckBox) findViewById(R.id.generalTextView);
-        CheckBox gaming = (CheckBox) findViewById(R.id.gameTextView);
-
-        category = new ArrayList<>();
-        gridLayout.setVisibility(View.GONE);
-
-        if (entertainment.isChecked()) {
-            category.add("entertainment");
-        }
-        if (politic.isChecked()) {
-            category.add("politics");
-        }
-        if (business.isChecked()) {
-            category.add("business");
-        }
-        if (sports.isChecked()) {
-            category.add("sport");
-        }
-        if (science.isChecked()) {
-            category.add("science-and-nature");
-        }
-        if (tech.isChecked()) {
-            category.add("technology");
-        }
-        if (music.isChecked()) {
-            category.add("music");
-        }
-        if (general.isChecked()) {
-            category.add("general");
-        }
-        if (gaming.isChecked()) {
-            category.add("gaming");
-        }
-
-        articleButton.setVisibility(View.VISIBLE);
-        List<String> allCategories = new ArrayList<>();
-        allCategories.add("business");
-        allCategories.add("sports");
-        allCategories.add("science-and-nature");
-        allCategories.add("politics");
-        allCategories.add("technology");
-        allCategories.add("music");
-        allCategories.add("general");
-        allCategories.add("gaming");
-        for (int i = 0; i < allCategories.size(); i++) {
-            ContentValues values = new ContentValues();
-            values.put(NewsContract.CategoryColumns.COLUMN_NAME, allCategories.get(i));
-            if (category.contains(allCategories.get(i))) {
-                values.put(NewsContract.CategoryColumns.COLUMN_STATUS, NewsContract.CategoryColumns.CATEGORY_SELECTED);
-            } else {
+        Cursor cursor = getContentResolver().query(NewsContract.CategoryColumns.CONTENT_URI, null, null, null, null);
+        if (cursor.getCount() == 0) {
+            List<String> allCategories = new ArrayList<>();
+            allCategories.add("business");
+            allCategories.add("sport");
+            allCategories.add("science-and-nature");
+            allCategories.add("politics");
+            allCategories.add("technology");
+            allCategories.add("music");
+            allCategories.add("general");
+            allCategories.add("gaming");
+            allCategories.add("entertainment");
+            for (int i = 0; i < allCategories.size(); i++) {
+                ContentValues values = new ContentValues();
+                String str = allCategories.get(i);
+                values.put(NewsContract.CategoryColumns.COLUMN_NAME, str);
                 values.put(NewsContract.CategoryColumns.COLUMN_STATUS, NewsContract.CategoryColumns.CATEGORY_NOT_SELECTED);
+                getContentResolver().insert(NewsContract.CategoryColumns.CONTENT_URI, values);
             }
-            getContentResolver().insert(NewsProvider.Categories.CONTENT_URI, values);
+            LoaderManager loaderManager = getLoaderManager();
+            loaderManager.initLoader(1, null, this);
+
         }
-        selectSources();
-    }
-    public void  selectSources() {
-        LoaderManager loaderManager = getLoaderManager();
-        loaderManager.initLoader(1, null, this);
     }
 
 
@@ -607,7 +577,18 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onLoadFinished(Loader<List<Source>> loader, List<Source> sources) {
-        selectedSources = new ArrayList<>();
+        for (int i = 0; i < sources.size(); i++) {
+            ContentValues contentValues = new ContentValues();
+
+            Source source = sources.get(i);
+            contentValues.put(NewsContract.SourceColumns.COLUMN_SOURCE_NAME, source.getName());
+            contentValues.put(NewsContract.SourceColumns.COLUMN_SOURCE_ID, source.getId());
+            contentValues.put(NewsContract.SourceColumns.COLUMN_CATEGORY_NAME, source.getCategory());
+            contentValues.put(NewsContract.SourceColumns.COLUMN_COLUMN_STATUS, NewsContract.SourceColumns.SOURCE_NOT_SELECTED);
+            getContentResolver().insert(NewsContract.SourceColumns.CONTENT_URI, contentValues);
+        }
+        startActivity(new Intent(this, CategoryActivity.class));
+     /*   selectedSources = new ArrayList<>();
         GridLayoutManager gl = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(gl);
         recyclerView.setVisibility(View.VISIBLE);
@@ -631,32 +612,12 @@ public class MainActivity extends AppCompatActivity implements
         });
 
         recyclerView.setAdapter(rv);
-        gridLayout.setVisibility(View.GONE);
-
+*/
     }
 
     @Override
     public void onLoaderReset(Loader<List<Source>> loader) {
     }
-
-    public void findArticles(View v) {
-
-        for (int i = 0; i < storedSources.size(); i++) {
-            ContentValues contentValues = new ContentValues();
-
-            Source source = storedSources.get(i);
-            contentValues.put(NewsContract.SourceColumns.COLUMN_SOURCE_NAME, source.getName());
-            contentValues.put(NewsContract.SourceColumns.COLUMN_SOURCE_ID, source.getId());
-            contentValues.put(NewsContract.SourceColumns.COLUMN_CATEGORY_NAME, source.getCategory());
-            getContentResolver().insert(NewsProvider.Sources.CONTENT_URI, contentValues);
-        }
-
-        recyclerView.setVisibility(View.GONE);
-        updateUI();
-        articleButton.setVisibility(View.GONE);
-    }
-
-
 
 
 }

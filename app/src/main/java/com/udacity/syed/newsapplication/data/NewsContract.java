@@ -1,11 +1,7 @@
 package com.udacity.syed.newsapplication.data;
 
-import net.simonvt.schematic.annotation.AutoIncrement;
-import net.simonvt.schematic.annotation.ConflictResolutionType;
-import net.simonvt.schematic.annotation.DataType;
-import net.simonvt.schematic.annotation.DefaultValue;
-import net.simonvt.schematic.annotation.NotNull;
-import net.simonvt.schematic.annotation.PrimaryKey;
+import android.net.Uri;
+import android.provider.BaseColumns;
 
 /**
  * Created by shoiab on 2017-09-19.
@@ -13,76 +9,61 @@ import net.simonvt.schematic.annotation.PrimaryKey;
 
 public class NewsContract {
 
-    public interface CategoryColumns {
+    public final static String CONTENT_AUTHORITY = "com.udacity.syed.newsapplication";
 
-        public static final int CATEGORY_SELECTED = 1;
-        public static final int CATEGORY_NOT_SELECTED = 0;
+    public final static Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
+    public final static String PATH_CATEGORY = "/category";
+    public final static String PATH_SOURCE = "/source";
+    public final static String PATH_ARTICLE = "/article";
 
-        @DataType(DataType.Type.INTEGER)
-        @PrimaryKey(onConflict = ConflictResolutionType.REPLACE)
-        @AutoIncrement
+    public static final class CategoryColumns implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                Uri.parse("content://" + CONTENT_AUTHORITY + PATH_CATEGORY);
+        public static final int CATEGORY_SELECTED = 2;
+        public static final int CATEGORY_NOT_SELECTED = 1;
+        public static final String CATEGORY_TABLE_NAME = "category";
+
         public static final String COLUMN_ID = "_id";
-
-        @DataType(DataType.Type.TEXT)
-        @NotNull
         public static final String COLUMN_NAME = "category";
-
-        @DataType(DataType.Type.INTEGER)
-        @DefaultValue("0")
         public static final String COLUMN_STATUS = "status";
+
+
     }
 
-    public interface SourceColumns {
+    public static final class SourceColumns implements BaseColumns {
 
-        @DataType(DataType.Type.INTEGER)
-        @PrimaryKey(onConflict = ConflictResolutionType.REPLACE)
-        @AutoIncrement
+        public static final Uri CONTENT_URI =
+                Uri.parse("content://" + CONTENT_AUTHORITY + PATH_SOURCE);
+        public static final int SOURCE_SELECTED = 2;
+        public static final int SOURCE_NOT_SELECTED = 1;
+        public static final String SOURCE_TABLE_NAME = "source";
+
         public static final String COLUMN_ID = "_id";
-
-        @DataType(DataType.Type.TEXT)
-        @NotNull
         public static final String COLUMN_SOURCE_NAME = "source";
-
-        @DataType(DataType.Type.TEXT)
-        @NotNull
         public static final String COLUMN_SOURCE_ID = "source_id";
-
-        @DataType(DataType.Type.TEXT)
-        @NotNull
         public static final String COLUMN_CATEGORY_NAME = "source_category_name";
+        public static final String COLUMN_COLUMN_STATUS = "status";
+
 
     }
 
-    public interface ArticleColumns {
+    public static final class ArticleColumns implements BaseColumns {
 
-        @DataType(DataType.Type.INTEGER)
-        @PrimaryKey(onConflict = ConflictResolutionType.REPLACE)
-        @AutoIncrement
+        public static final Uri CONTENT_URI =
+                Uri.parse("content://" + CONTENT_AUTHORITY + PATH_ARTICLE);
         public static final String COLUMN_ID = "_id";
+        public static final String ARTICLE_TABLE_NAME = "article";
 
-        @DataType(DataType.Type.TEXT)
-        @NotNull
         public static final String COLUMN_NAME = "name";
 
-        @DataType(DataType.Type.TEXT)
-        @NotNull
         public static final String COLUMN_AUTHOR = "author";
 
-        @DataType(DataType.Type.TEXT)
-        @NotNull
         public static final String COLUMN_DESCRIPTION = "description";
-
-        @DataType(DataType.Type.TEXT)
-        @NotNull
         public static final String COLUMN_ARTICLE_URL = "article_url";
-
-        @DataType(DataType.Type.TEXT)
-        @NotNull
         public static final String COLUMN_PIC_URL = "pic_url";
-
-        @DataType(DataType.Type.TEXT)
-        @NotNull
         public static final String COLUMN_PUBLISHED = "published";
+
+
     }
 }

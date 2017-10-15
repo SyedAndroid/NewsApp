@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/app_bar_main"
     android:orientation="vertical"
-    tools:context="com.udacity.syed.newsapplication.MainActivity">
-
-
-
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.udacity.syed.newsapplication.MainActivity"
+    tools:showIn="@layout/app_bar_main">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
@@ -21,11 +17,11 @@
         android:background="@android:color/white" />
 
     <LinearLayout
+        android:id="@+id/sign_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dip"
-        android:id="@+id/sign_layout">
+        android:padding="20dip">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -38,29 +34,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_custom"
-                android:textColor="#FFFFFF"
                 android:gravity="center|center_vertical"
-                android:text="Sign In"
-                android:textAllCaps="false"/>
+                android:text="@string/singin"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF" />
 
             <Button
                 android:id="@+id/sign_out_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sign Out"
                 android:enabled="true"
-                android:textAllCaps="false"
-                />
+                android:text="@string/signout"
+                android:textAllCaps="false" />
 
             <Button
                 android:id="@+id/revoke_access_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Revoke Access"
                 android:enabled="true"
-                android:textAllCaps="false"/>
-
-
+                android:text="@string/revoke"
+                android:textAllCaps="false" />
 
         </LinearLayout>
 
@@ -72,85 +65,4 @@
             android:text="" />
 
     </LinearLayout>
-
-    <GridLayout
-        android:id="@+id/grid_category"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:columnCount="2">
-
-        <CheckBox
-            android:id="@+id/businessTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/business"/>
-
-            <CheckBox
-            android:id="@+id/enterTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/entertainment"/>
-
-        <CheckBox
-            android:id="@+id/politicsTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/politics"/>
-
-        <CheckBox
-            android:id="@+id/sportsTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sports"/>
-
-        <CheckBox
-            android:id="@+id/scienceTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/science"/>
-
-        <CheckBox
-            android:id="@+id/techTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/technology"/>
-
-        <CheckBox
-            android:id="@+id/generalTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/general"/>
-
-        <CheckBox
-            android:id="@+id/musicTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/music"/>
-
-        <CheckBox
-            android:id="@+id/gameTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/gaming"/>
-
-        <Button android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Next"
-            android:onClick="findSources"/>
-    </GridLayout>
-    <Button
-        android:id="@+id/findarticles_button"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="Next"
-        android:onClick="findArticles"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycle_view_source"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="4dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-
 </LinearLayout>

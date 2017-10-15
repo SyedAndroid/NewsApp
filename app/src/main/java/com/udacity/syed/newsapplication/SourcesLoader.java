@@ -23,7 +23,6 @@ import java.util.List;
 public class SourcesLoader extends AsyncTaskLoader<List<Source>> {
 
     public static final String BASE_API = "https://newsapi.org/v1/sources";
-    String source;
 
     public SourcesLoader(Context context) {
         super(context);
