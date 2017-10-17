@@ -12,3 +12,6 @@ Implemented.
   7. The app uses Loader Manager to make the network request 
   8. Information is displayed using RecyclerView.
   9. User can visit and share the link of the article using the Explicit intents.
+  10. SwipeRefreshLayout is implemented to refresh the articles by creating the intent service that fetches the data and updates the recycleview
+  11. Google ads are displayed in the detail article layout
+  
